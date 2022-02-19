@@ -3,3 +3,4 @@
 ./__pycache__
 checkpoint/*.pth
 data/*
+models/__pycache__
