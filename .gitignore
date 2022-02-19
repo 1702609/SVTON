@@ -1,6 +1,0 @@
-./.idea
-./.ipynb_checkpoints
-./__pycache__
-checkpoint/*.pth
-data/*
-models/__pycache__
