@@ -8,11 +8,14 @@ We have included the pre-trained checkpoint, dataset and results.
 </p>
 
 ### Prerequisites
-Download the pre-trained checkpoints and dataset in the link below: 
-
-[[Pre-trained checkpoints]](https://drive.google.com/file/d/1UWT6esQIU_d4tUm8cjxDKMhB8joQbrFx/view?usp=sharing) 
+Download the pre-trained checkpoints and dataset: 
+[[Pre-trained checkpoints]](https://www.dropbox.com/s/yveeid5i57jlwut/checkpoints.zip?dl=0) 
 [[Dataset]](https://www.dropbox.com/s/8nl54f3uzf5p6zi/SVTON_DATASET.zip?dl=0)
-
+ 
+Extract the files and place them in the checkpoint and data directory
+<!-- GETTING STARTED -->
+## Getting Started
+To run the inference of our model, execute ```python3 run_inference.py```
 
 We have developed the model in Python3.8 environment.
 
@@ -24,21 +27,6 @@ conda activate [ENV]
 pip3 install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio===0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
 pip install opencv-python torchgeometry
 ```
-
-
-``` 
-pip install -r requirements.txt
-```
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-  
-<!-- GETTING STARTED -->
-## Getting Started
-Make sure you place the dataset and pre-trained models in the data and checkpoint directory. <br>
-To run the inference of our model, execute ```python3 *.py```
-
 
 ### Installation
 
