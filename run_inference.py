@@ -6,6 +6,10 @@ import cv2
 from models import networks, dataset
 from torch.autograd import Variable
 from PIL import Image
+<<<<<<< HEAD
+=======
+import os
+>>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
 
 class Args:
     batchSize = 1
@@ -95,6 +99,12 @@ transform_A = dataset.get_transform(normalize=False)
 tanh = torch.nn.Tanh()
 sigmoid = nn.Sigmoid()
 step = 0
+<<<<<<< HEAD
+=======
+
+if not os.path.isdir('result'):
+    os.mkdir('result')
+>>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
 for data in dataloader:
     mask_clothes = torch.FloatTensor((data['label'].cpu().numpy() == 4).astype(np.int))
     mask_fore = torch.FloatTensor((data['label'].cpu().numpy() > 0).astype(np.int))

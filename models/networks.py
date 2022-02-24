@@ -1,6 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+<<<<<<< HEAD
+=======
+from torch.autograd import Variable
+from torchvision import models
+>>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
 
 class PHPM(nn.Module):
     def __init__(self, input_nc, output_nc=3):
@@ -263,4 +268,118 @@ class Net(nn.Module):
     def forward(self, clothes, in_mask_clothes):
         # transform the input
         x = self.stn(clothes, in_mask_clothes)
+<<<<<<< HEAD
         return x
+=======
+        return x
+
+class Discriminator(nn.Module):
+    def __init__(self, input_nc, n_layers=2, getIntermFeat=False):
+        super(Discriminator, self).__init__()
+        self.n_layers = n_layers
+        self.getIntermFeat = getIntermFeat
+        nl = nn.BatchNorm2d
+        self.conv1 = nn.Sequential(*[nn.Conv2d(input_nc, 64, kernel_size=4, stride=2, padding=2), nn.LeakyReLU(0.2, True), nn.Dropout(0.80)])
+        self.conv2 = nn.Sequential(*[nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=2), nl(128) , nn.LeakyReLU(0.2, True), nn.Dropout(0.65)])
+        self.conv3 = nn.Sequential(*[nn.Conv2d(128, 256, kernel_size=4, stride=1, padding=2), nl(256) , nn.LeakyReLU(0.2, True), nn.Dropout(0.50)])
+        self.conv4 = nn.Sequential(*[nn.Conv2d(256, 1, kernel_size=4, stride=1, padding=2), nn.Sigmoid()])
+
+    def forward(self, x):
+        conv1 = self.conv1(x)
+        conv2 = self.conv2(conv1)
+        conv3 = self.conv3(conv2)
+        conv4 = self.conv4(conv3)
+        return conv4
+
+class GANLoss(nn.Module):
+    def __init__(self, use_lsgan=True, target_real_label=1.0, target_fake_label=0.0,
+                 tensor=torch.FloatTensor):
+        super(GANLoss, self).__init__()
+        self.real_label = target_real_label
+        self.fake_label = target_fake_label
+        self.real_label_var = None
+        self.fake_label_var = None
+        self.Tensor = tensor
+        if use_lsgan:
+            self.loss = nn.MSELoss()
+        else:
+            self.loss = nn.BCELoss()
+
+    def get_target_tensor(self, input, target_is_real):
+        target_tensor = None
+        if target_is_real:
+            create_label = ((self.real_label_var is None) or
+                            (self.real_label_var.numel() != input.numel()))
+            if create_label:
+                real_tensor = self.Tensor(input.size()).fill_(self.real_label)
+                self.real_label_var = Variable(
+                    real_tensor, requires_grad=False)
+            target_tensor = self.real_label_var
+        else:
+            create_label = ((self.fake_label_var is None) or
+                            (self.fake_label_var.numel() != input.numel()))
+            if create_label:
+                fake_tensor = self.Tensor(input.size()).fill_(self.fake_label)
+                self.fake_label_var = Variable(
+                    fake_tensor, requires_grad=False)
+            target_tensor = self.fake_label_var
+        return target_tensor
+
+    def __call__(self, input, target_is_real):
+        if isinstance(input[0], list):
+            loss = 0
+            for input_i in input:
+                pred = input_i[-1]
+                target_tensor = self.get_target_tensor(pred, target_is_real)
+                loss += self.loss(pred, target_tensor)
+            return loss
+        else:
+            target_tensor = self.get_target_tensor(input[-1], target_is_real)
+            return self.loss(input[-1], target_tensor)
+
+class Vgg19(torch.nn.Module):
+    def __init__(self, requires_grad=False):
+        super(Vgg19, self).__init__()
+        vgg = models.vgg19(pretrained=True)
+        vgg_pretrained_features = vgg.features
+        self.vgg = vgg
+        self.slice1 = torch.nn.Sequential()
+        self.slice2 = torch.nn.Sequential()
+        self.slice3 = torch.nn.Sequential()
+        self.slice4 = torch.nn.Sequential()
+        self.slice5 = torch.nn.Sequential()
+        for x in range(2):
+            self.slice1.add_module(str(x), vgg_pretrained_features[x])
+        for x in range(2, 7):
+            self.slice2.add_module(str(x), vgg_pretrained_features[x])
+        for x in range(7, 12):
+            self.slice3.add_module(str(x), vgg_pretrained_features[x])
+        for x in range(12, 21):
+            self.slice4.add_module(str(x), vgg_pretrained_features[x])
+        for x in range(21, 30):
+            self.slice5.add_module(str(x), vgg_pretrained_features[x])
+        if not requires_grad:
+            for param in self.parameters():
+                param.requires_grad = False
+
+    def forward(self, X):
+        h_relu1 = self.slice1(X)
+        h_relu2 = self.slice2(h_relu1)
+        h_relu3 = self.slice3(h_relu2)
+        h_relu4 = self.slice4(h_relu3)
+        h_relu5 = self.slice5(h_relu4)
+        out = [h_relu1, h_relu2, h_relu3, h_relu4, h_relu5]
+        return out
+
+class VGGLoss(nn.Module):
+    def __init__(self):
+        super(VGGLoss, self).__init__()
+        self.vgg = Vgg19().cuda()
+        self.criterion = nn.L1Loss()
+        self.weights = [1.0 / 32, 1.0 / 16, 1.0 / 8, 1.0 / 4, 1.0]
+
+    def forward(self, x, y):
+        x_vgg, y_vgg = self.vgg(x), self.vgg(y)
+        loss = self.weights[4] * self.criterion(x_vgg[4], y_vgg[4].detach())
+        return loss
+>>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560

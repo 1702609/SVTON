@@ -1,2 +1,6 @@
 *
+<<<<<<< HEAD
+=======
+!custom_test.txt
+>>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
 !.gitignore
