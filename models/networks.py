@@ -1,11 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-<<<<<<< HEAD
-=======
 from torch.autograd import Variable
 from torchvision import models
->>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
 
 class PHPM(nn.Module):
     def __init__(self, input_nc, output_nc=3):
@@ -268,9 +265,6 @@ class Net(nn.Module):
     def forward(self, clothes, in_mask_clothes):
         # transform the input
         x = self.stn(clothes, in_mask_clothes)
-<<<<<<< HEAD
-        return x
-=======
         return x
 
 class Discriminator(nn.Module):
@@ -382,4 +376,3 @@ class VGGLoss(nn.Module):
         x_vgg, y_vgg = self.vgg(x), self.vgg(y)
         loss = self.weights[4] * self.criterion(x_vgg[4], y_vgg[4].detach())
         return loss
->>>>>>> 13a017fe8f20d03d18468e26cf81bc42cee37560
