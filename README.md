@@ -12,9 +12,9 @@ Download the pre-trained checkpoints and dataset:
 [[Pre-trained checkpoints]](https://www.dropbox.com/s/yveeid5i57jlwut/checkpoints.zip?dl=0) 
 [[Dataset]](https://www.dropbox.com/s/8nl54f3uzf5p6zi/SVTON_DATASET.zip?dl=0)
  
-Extract the files and place them in the checkpoint and data directory
-<!-- GETTING STARTED -->
-## Getting Started
+Extract the files and place them in the ```checkpoint``` and ```data``` directory
+<!-- INSTALLATION -->
+## Installation
 To run the inference of our model, execute ```python3 run_inference.py```
 
 We recommend creating a virtual environment using venv or conda.  
@@ -23,14 +23,15 @@ If using conda on Windows:
 ```
 conda create --name [ENV_NAME] python=3.9
 conda activate [ENV_NAME]
-pip3 install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio===0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-pip install
+pip install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio===0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+pip install -r requirements.txt
 ```
 <!-- GETTING STARTED -->
 ## Getting Started
-
+Modify the ```data/custom.txt``` to select the pair of the candidate and target clothing. <br>
 To run the inference of our model, execute ```python3 run_inference.py```
 
+To train, run ```python3 train_[phpm/gmm/tom]``` and the checkpoint will be saved periodically in the ```checkpoint_[phpm/gmm/tom]``` directory.
 
 <!-- Results -->
 ## Results
