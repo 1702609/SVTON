@@ -14,7 +14,7 @@ writer = SummaryWriter('runs/TOM')
 
 class Args:
     batchSize = 4
-    dataroot = '../../DeepFashion_Try_On/acgpn_dataset/'
+    dataroot = 'data'
     datapairs = 'train_pairs.txt'
     phase = 'train'
     beta1 = 0.5
@@ -23,7 +23,7 @@ opt = Args
 
 class Args2:
     batchSize = 2
-    dataroot = '../../DeepFashion_Try_On/acgpn_dataset/'
+    dataroot = 'data'
     datapairs = 'val_pairs.txt'
     phase = 'val'
 opt2 = Args2
@@ -244,6 +244,8 @@ for epoch in range(100):
         in_mask_bottom_label = Variable(mask_bottom.cuda())
         mask_head = torch.FloatTensor((data['label'].cpu().numpy() == 12).astype(np.int))
         in_mask_head_label = Variable(mask_head.cuda())
+        in_label = Variable(data['label'].cuda())
+        size = in_label.size()
 
         segment = (in_label * (1 - in_mask_hair_label) * (1 - in_mask_bottom_label) *
                    (1 - in_mask_head_label)).transpose(0, 1)[0].long()
@@ -259,7 +261,7 @@ for epoch in range(100):
         in_image = Variable(data['image'].cuda())
         in_clothes = Variable(data['color'].cuda())
         mask = Variable(data['mask'].cuda())
-        mask_fore = torch.FloatTensor((in_label.cpu().numpy() > 0).astype(np.int))
+        mask_fore = torch.cuda.FloatTensor((in_label.cpu().numpy() > 0).astype(np.int))
 
         torso_label = (segment == 1).to(torch.float32)
         img_fore = (in_image * mask_fore)
