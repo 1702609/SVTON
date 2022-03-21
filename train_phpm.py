@@ -155,8 +155,8 @@ for epoch in range(20):
 
         size = in_label.size()
         wanted_feature = (in_label * (1 - in_mask_hair_label) * (1 - in_mask_bottom_label) *
-                          (1 - in_mask_head_label)).transpose(0,1)[0].long()
-        wanted_feature = wanted_feature.unsqueeze(1)  # Despite removing some labels, cross-entropy will see this as having 14 channels
+                          (1 - in_mask_head_label))
+        # Despite removing some labels, cross-entropy will see this as having 14 channels
         oneHot_size = (size[0], 14, size[2], size[3])
         input_label = torch.cuda.FloatTensor(torch.Size(oneHot_size)).zero_()
         ground_truth_14 = input_label.scatter_(1, wanted_feature.data.long().cuda(), 1.0)
@@ -214,8 +214,7 @@ for epoch in range(20):
 
         size = in_label.size()
         wanted_feature = \
-        (in_label * (1 - in_mask_hair_label) * (1 - in_mask_bottom_label) * (1 - in_mask_head_label)).transpose(0, 1)[
-            0].long()
+        (in_label * (1 - in_mask_hair_label) * (1 - in_mask_bottom_label) * (1 - in_mask_head_label))
         wanted_feature = wanted_feature.unsqueeze(1) # Despite removing some labels, cross-entropy will see this as having 14 channels
         oneHot_size = (size[0], 14, size[2], size[3])
         input_label = torch.cuda.FloatTensor(torch.Size(oneHot_size)).zero_()
