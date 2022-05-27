@@ -33,6 +33,11 @@ To run the inference of our model, execute ```python3 run_inference.py```
 
 To train, run ```python3 train_[phpm/gmm/tom]``` and the checkpoint will be saved periodically in the ```checkpoint_[phpm/gmm/tom]``` directory.
 
+<!-- Model Overview -->
+## Model Overview 
+
+
+
 <!-- Results -->
 ## Results
 ![image](image/qualitative.jpg)
@@ -42,3 +47,11 @@ We have used Dice and IoU to evaluate our segmentation performance. The ground t
 ![image](image/quan1.jpg)
 ![image](image/quan2.jpg)
 ![image](image/quan3.jpg)
+
+<!-- Negative Results -->
+## Negative Result
+
+The segmentation module can generate a torso that is either too big or small. The example below shows the torso not connecting with the lower body. The binary mask does not provide information about where the boundary is between the upper and lower body. The segmentation module can find it challenging to generate the torso label with the correct size.  
+
+![image](image/negative.jpg)
+
