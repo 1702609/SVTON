@@ -160,9 +160,7 @@ for epoch in range(100):
         size = in_label.size()
 
         segment = (in_label * (1 - in_mask_hair_label) * (1 - in_mask_bottom_label) *
-                          (1 - in_mask_head_label)).transpose(0, 1)[0].long()
-        segment = segment.unsqueeze(
-            1)  # Despite removing some labels, cross-entropy will see this as having 14 channels
+                          (1 - in_mask_head_label)).transpose(0, 1).long()
         oneHot_size = (size[0], 14, size[2], size[3])
         input_label = torch.cuda.FloatTensor(torch.Size(oneHot_size)).zero_()
         segment_14 = input_label.scatter_(1, segment.data.long().cuda(), 1.0)

@@ -87,7 +87,6 @@ class PHPM(nn.Module):
         conv9 = self.drop7(self.conv9(torch.cat([conv1, up9], 1)))
         return conv9
 
-
 class TOM(nn.Module):
     def __init__(self, input_nc, output_nc=3):
         super(TOM, self).__init__()
@@ -103,7 +102,6 @@ class TOM(nn.Module):
         self.pool3 = nn.MaxPool2d(kernel_size=(2, 2))
         self.conv4 = nn.Sequential(*[nn.Conv2d(256, 512, kernel_size=3, stride=1, padding=1), nl(512), nn.ReLU(),
                                      nn.Conv2d(512, 512, kernel_size=3, stride=1, padding=1), nl(512), nn.ReLU()])
-        self.drop4 = nn.Dropout(0.5)
         self.pool4 = nn.MaxPool2d(kernel_size=(2, 2))
         self.conv5 = nn.Sequential(*[nn.Conv2d(512, 1024, kernel_size=3, stride=1, padding=1), nl(1024), nn.ReLU(),
                                      nn.Conv2d(1024, 1024, kernel_size=3, stride=1, padding=1), nl(1024), nn.ReLU()])
@@ -140,12 +138,11 @@ class TOM(nn.Module):
         conv3 = self.conv3(pool2)
         pool3 = self.pool3(conv3)
         conv4 = self.conv4(pool3)
-        drop4 = self.drop4(conv4)
-        pool4 = self.pool4(drop4)
+        pool4 = self.pool4(conv4)
         conv5 = self.conv5(pool4)
         drop5 = self.drop5(conv5)
         up6 = self.up6(drop5)
-        conv6 = self.conv6(torch.cat([drop4, up6], 1))
+        conv6 = self.conv6(torch.cat([conv4, up6], 1))
         up7 = self.up7(conv6)
         conv7 = self.conv7(torch.cat([conv3, up7], 1))
         up8 = self.up8(conv7)
@@ -153,7 +150,6 @@ class TOM(nn.Module):
         up9 = self.up9(conv8)
         conv9 = self.conv9(torch.cat([conv1, up9], 1))
         return conv9
-
 
 class GMM(nn.Module):
     def __init__(self, input_nc, output_nc=3):
