@@ -34,8 +34,8 @@ To run the inference of our model, execute ```python3 run_inference.py```
 To train, run ```python3 train_[phpm/gmm/tom]``` and the checkpoint will be saved periodically in the ```checkpoint_[phpm/gmm/tom]``` directory.
 
 <!-- Model Overview -->
-## Model Overview 
-
+## Model Overview
+![image](image/overview.jpg)
 
 
 <!-- Results -->
